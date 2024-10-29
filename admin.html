@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask The Boot Admin Panel</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <h1>Admin Panel</h1>
+
+    <!-- Incoming messages list -->
+    <div id="messages">
+        <h2>Incoming Messages:</h2>
+        <ul id="messageList"></ul>
+    </div>
+
+    <!-- Active Users List -->
+    <div id="active-users">
+        <h2>Active Users:</h2>
+        <ul id="userList"></ul>
+    </div>
+
+    <!-- Send message to a specific user -->
+    <div>
+        <h2>Send Message to User</h2>
+        <input type="text" id="userId" placeholder="Enter User ID">
+        <input type="text" id="adminMessage" placeholder="Enter Message">
+        <button onclick="sendMessageToUser()">Send</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Update user list when a user connects
+        socket.on('userListUpdate', (users) => {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = ''; // Clear the list
+            users.forEach(user => {
+                const listItem = document.createElement('li');
+                listItem.textContent = user.username; // Display username
+                listItem.style.color = 'blue'; // Set color to blue
+                listItem.onclick = () => sendMessageToUser(user.id); // Add click event to send message
+                userList.appendChild(listItem);
+            });
+        });
+
+        // Sending message to a specific user from the admin panel
+        function sendMessageToUser(userId) {
+            const message = document.getElementById('adminMessage').value;
+            socket.emit('adminToUser', { userId, message });
+        }
+
+        // Receiving messages from users
+        socket.on('adminMessage', (data) => {
+            const messageList = document.getElementById('messageList');
+            const listItem = document.createElement('li');
+            listItem.textContent = `Message from ${data.username}: ${data.msg}`;
+            messageList.appendChild(listItem);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask The Boot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="login-container">
+        <h1>Ask The Boot</h1>
+        <form id="login-form">
+            <input type="text" placeholder="Username" id="username" required>
+            <input type="password" placeholder="Password" id="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Chat Page -->
+    <div id="chat-page" class="chat-container" style="display: none;">
+        <div class="chat-header">
+            <h1>Chat With The Boot</h1>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <div class="message from-bot">
+                <p>Hi! Kifax Ymkn Lia N3awnk?</p>
+            </div>
+        </div>
+        <div class="message-input">
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
